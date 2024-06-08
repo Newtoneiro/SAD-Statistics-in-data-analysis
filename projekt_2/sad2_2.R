@@ -20,16 +20,17 @@ differences <- X - Y
 boxplot(differences, main="Różnice Inflacja własna - Inflacja oficjalna", ylab="Procent")
 
 # Krok 4: Testowanie hipotezy
-# Hipoteza zerowa H0: Mediana różnic = 0
-# Hipoteza alternatywna HA: Mediana różnic != 0
+# Hipoteza zerowa H0: Średnia inflacji studenckiej (własnej) jest mniejsza lub równa średniej inflacji oficjalnej
+# Hipoteza alternatywna HA: Średnia inflacji studenckiej (własnej) jest większa od średniej inflacji oficjalnej
 
-# Przeprowadzenie testu Wilcoxona (test par Wilcoxona)
-test_result <- wilcox.test(X, Y, paired=TRUE)
-test_result
+# Sprawdzenie normalności rozkładów
+shapiro_x <- shapiro.test(X)
+shapiro_y <- shapiro.test(Y)
+print(shapiro_x)
+print(shapiro_y)
 
-# Interpretacja wyniku testu
-if (test_result$p.value < 0.05) {
-  cat("Odrzucamy hipotezę zerową na poziomie istotności 0.05. Istnieje statystycznie istotna różnica między inflacjami.\n")
-} else {
-  cat("Brak podstaw do odrzucenia hipotezy zerowej na poziomie istotności 0.05. Brak statystycznie istotnej różnicy między inflacjami.\n")
-}
+# # Przeprowadzenie testu Wilcoxona (test par Wilcoxona)
+wilcox_test <- wilcox.test(X, Y, paired = TRUE, alternative = "greater")
+
+# Wyniki testu
+print(wilcox_test)
